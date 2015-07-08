@@ -14,47 +14,62 @@
  *  
  **/
 #include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
 #include <string>
 #include <cstdio>
 
 using namespace std;
 using namespace rapidjson;
 
-void printJsonTree(FILE* fp, const Value& v, string path=".")
+void printJsonTree(FILE* fp, const Value* v, string path="->")
 {
-    Type type = v.GetType();
+    Type type = v->GetType();
 
     switch (type)
     {
         case kObjectType:
         {
-            fprintf(fp, "%s={}\n", path.c_str());
-            string suffix = *(path.end()-1) == '.' ? "" : ".";
-            for (Value::ConstMemberIterator it=v.MemberBegin(); it!=v.MemberEnd(); it++)
+            fprintf(fp, "Object:%s\n", path.c_str());
+            string suffix = *(path.end()-1) == '>' ? "" : "->";
+            for (Value::ConstMemberIterator it=v->MemberBegin(); it!=v->MemberEnd(); it++)
             {
                 const string key = it->name.GetString();
-                const Value tmpValue = it->value;
-                printJsonTree(fp, tmpValue[key], path + suffix + key);
+                const Value* tmpValue = &it->value;
+                printJsonTree(fp, (Value *)tmpValue, path + suffix + key);
 
             }
         }
         break;
         case kArrayType:
         {
-            fprintf(fp, "%s=[]\n", path.c_str());
-            SizeType size = v.Size();
+            fprintf(fp, "Array:%s\n", path.c_str());
+            SizeType size = v->Size();
             for (SizeType i=0; i<size; ++i)
             {
-                string buffer = "[" + i + "]";
-                printJsonTree(fp, v[i], path + buffer);
+//                string buffer = "[" + i + "]";
+                char buffer[16];
+                sprintf(buffer, "->%d", i);  
+                printJsonTree(fp, &(*v)[i], path + string(buffer));
             }
         }
         break;
-        default:
+        case kStringType:
         {
-            fprintf(fp, "%s=\"%s\"\n", path.c_str(), v.c_str());
+            fprintf(fp, "%s=\"%s\"\n", path.c_str(), v->GetString());
         }
         break;
+        case kNumberType:
+        {
+            if (v->IsInt64())
+            {
+                fprintf(fp, "%s=%u\n", path.c_str(), v->GetInt64());
+            }else if(v->IsDouble())
+            {
+                fprintf(fp, "%s=%.2lf\n", path.c_str(), v->GetDouble());
+            } 
+        }
+        break;
+
     }
 }
 
@@ -74,7 +89,8 @@ int main()
     Document document;
     document.ParseStream<0, UTF8<>, FileReadStream>(is);
 
-    printJsonTree(fp, document, ".");
+    printJsonTree(fp, &document, "->");
+    
     return 0;
 }
 
