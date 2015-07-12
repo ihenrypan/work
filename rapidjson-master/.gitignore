@@ -1,3 +1,10 @@
+# Pan added
+out.txt
+a.out
+*.swp
+/mycode
+jsonDiff
+
 /bin/*
 !/bin/data
 !/bin/encodings
