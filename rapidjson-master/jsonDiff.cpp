@@ -123,7 +123,7 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
             SizeType offSize = offValue->Size();
 
             SizeType minSize = onSize < offSize ? onSize : offSize;
-            SizeType i=0;
+            SizeType i = 0;
             int ret, status;
             for (; i<minSize; ++i)
             {
@@ -201,6 +201,11 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
 			}
 			
             break;
+        }
+        default:// type = kTrueType || kFalseType || kNullType
+
+        {
+            status = 2;
         }
     }
     return 0;

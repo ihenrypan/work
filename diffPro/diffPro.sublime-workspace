@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"Has",
+				"HasParseError"
+			],
+			[
+				"read",
+				"readFileToString"
+			],
+			[
 				"s",
 				"s"
 			],
@@ -131,7 +139,7 @@
 			"file": "process.h",
 			"settings":
 			{
-				"buffer_size": 422,
+				"buffer_size": 424,
 				"line_ending": "Windows",
 				"name": "#"
 			}
@@ -140,9 +148,17 @@
 			"file": "process.cpp",
 			"settings":
 			{
-				"buffer_size": 5086,
+				"buffer_size": 5095,
 				"line_ending": "Windows",
 				"name": "#include \"sendReqs.h\""
+			}
+		},
+		{
+			"file": "jsonDiff.h",
+			"settings":
+			{
+				"buffer_size": 7862,
+				"line_ending": "Unix"
 			}
 		},
 		{
@@ -213,7 +229,7 @@
 			"file": "Makefile",
 			"settings":
 			{
-				"buffer_size": 621,
+				"buffer_size": 661,
 				"line_ending": "Unix"
 			}
 		}
@@ -265,9 +281,7 @@
 	},
 	"expanded_folders":
 	[
-		"/D/my_svn/code/diffPro",
-		"/D/my_svn/code/diffPro/conf",
-		"/D/my_svn/code/diffPro/libs"
+		"/home/pan/Code/work/diffPro"
 	],
 	"file_history":
 	[
@@ -291,7 +305,7 @@
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -381,7 +395,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -397,8 +411,8 @@
 						"selection":
 						[
 							[
-								1574,
-								1574
+								964,
+								964
 							]
 						],
 						"settings":
@@ -408,10 +422,10 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1020.0,
+						"translation.y": 270.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -420,15 +434,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 422,
+						"buffer_size": 424,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								266,
-								266
+								0,
+								0
 							]
 						],
 						"settings":
@@ -441,7 +455,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -450,15 +464,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5086,
+						"buffer_size": 5095,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4639,
-								4639
+								96,
+								96
 							]
 						],
 						"settings":
@@ -469,14 +483,43 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2210.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "jsonDiff.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7862,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7854,
+								7854
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3420.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "conf/diffPro.conf",
 					"semi_transient": false,
 					"settings":
@@ -501,11 +544,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "args.h",
 					"semi_transient": false,
 					"settings":
@@ -530,11 +573,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "args.cpp",
 					"semi_transient": false,
 					"settings":
@@ -558,14 +601,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 420.0,
+						"translation.y": 384.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "conf.h",
 					"semi_transient": false,
 					"settings":
@@ -590,11 +633,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "util.h",
 					"semi_transient": false,
 					"settings":
@@ -619,11 +662,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "util.cpp",
 					"semi_transient": false,
 					"settings":
@@ -650,11 +693,11 @@
 						"translation.y": 300.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "conf.cpp",
 					"semi_transient": false,
 					"settings":
@@ -666,8 +709,8 @@
 						"selection":
 						[
 							[
-								744,
-								744
+								369,
+								369
 							]
 						],
 						"settings":
@@ -680,11 +723,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "public.h",
 					"semi_transient": false,
 					"settings":
@@ -696,8 +739,8 @@
 						"selection":
 						[
 							[
-								127,
-								127
+								438,
+								438
 							]
 						],
 						"settings":
@@ -709,24 +752,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"file": "Makefile",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 621,
+						"buffer_size": 661,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								302,
-								302
+								0,
+								0
 							]
 						],
 						"settings":
@@ -738,7 +781,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 12,
 					"type": "text"
 				}
 			]
@@ -746,7 +789,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -787,7 +830,7 @@
 	"project": "diffPro.sublime-project",
 	"replace":
 	{
-		"height": 66.0
+		"height": 42.0
 	},
 	"save_all_on_build": true,
 	"select_file":

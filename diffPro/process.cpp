@@ -2,6 +2,7 @@
 #include "util.h"
 #include "conf.h"
 #include "args.h"
+#include "jsonDiff.h"
 
 size_t writeDataCallback(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
