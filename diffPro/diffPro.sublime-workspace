@@ -1,0 +1,833 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"s",
+				"s"
+			],
+			[
+				"pTmp",
+				"pTmpFile"
+			],
+			[
+				"pTm",
+				"pTmpFile"
+			],
+			[
+				"pS",
+				"pStrCmd"
+			],
+			[
+				"g_",
+				"g_pConf"
+			],
+			[
+				"MA",
+				"MAX_LINE"
+			],
+			[
+				"pD",
+				"pDictFileName"
+			],
+			[
+				"pSt",
+				"pStrTimestamp"
+			],
+			[
+				"g",
+				"g_pArgs"
+			],
+			[
+				"pDict",
+				"pDictPath"
+			],
+			[
+				"pDictFile",
+				"pDictFileName"
+			],
+			[
+				"MAX",
+				"MAX_NAME"
+			],
+			[
+				"Fi",
+				"filter"
+			],
+			[
+				"ret",
+				"return"
+			],
+			[
+				"g_p",
+				"g_pArgs"
+			],
+			[
+				"sp",
+				"sprintf"
+			],
+			[
+				"pStr",
+				"pStrCmd"
+			],
+			[
+				"M",
+				"MAX_NAME"
+			],
+			[
+				"iFi",
+				"iFileNum"
+			],
+			[
+				"iF",
+				"iFileNum"
+			],
+			[
+				"if",
+				"if	If Condition"
+			],
+			[
+				"stat",
+				"statBuffer"
+			],
+			[
+				"pDictF",
+				"pDictFilename"
+			],
+			[
+				"e",
+				"error"
+			],
+			[
+				"err",
+				"errno"
+			],
+			[
+				"er",
+				"errno"
+			],
+			[
+				"str",
+				"strerror"
+			],
+			[
+				"file",
+				"file"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "diffPro.cpp",
+			"settings":
+			{
+				"buffer_size": 1704,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "process.h",
+			"settings":
+			{
+				"buffer_size": 422,
+				"line_ending": "Windows",
+				"name": "#"
+			}
+		},
+		{
+			"file": "process.cpp",
+			"settings":
+			{
+				"buffer_size": 5086,
+				"line_ending": "Windows",
+				"name": "#include \"sendReqs.h\""
+			}
+		},
+		{
+			"file": "conf/diffPro.conf",
+			"settings":
+			{
+				"buffer_size": 305,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "args.h",
+			"settings":
+			{
+				"buffer_size": 469,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "args.cpp",
+			"settings":
+			{
+				"buffer_size": 2024,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "conf.h",
+			"settings":
+			{
+				"buffer_size": 733,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "util.h",
+			"settings":
+			{
+				"buffer_size": 1268,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "util.cpp",
+			"settings":
+			{
+				"buffer_size": 4388,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "conf.cpp",
+			"settings":
+			{
+				"buffer_size": 2430,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public.h",
+			"settings":
+			{
+				"buffer_size": 688,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Makefile",
+			"settings":
+			{
+				"buffer_size": 621,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "in",
+		"selected_items":
+		[
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 528.0
+	},
+	"console":
+	{
+		"height": 295.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/my_svn/code/diffPro",
+		"/D/my_svn/code/diffPro/conf",
+		"/D/my_svn/code/diffPro/libs"
+	],
+	"file_history":
+	[
+		"/D/my_svn/code/diffPro/diffPro.sublime-project",
+		"/D/my_svn/code/diffPro/common.cpp",
+		"/D/my_svn/code/diffPro/common.h",
+		"/D/my_svn/code/diffPro/diffPro - 副本.cpp",
+		"/D/my_svn/server/casemng/case/newfav/Case_1.php",
+		"/D/my_svn/server/casemng/common/basetest.php",
+		"/C/Users/panhongguang/Desktop/press_dict.php",
+		"/D/my_svn/server/casemng/runcases.sh",
+		"/D/my_svn/server/casemng/test.php",
+		"/D/my_svn/code/phpuiDiff/multireq/main.cpp",
+		"/D/server/services/favorites/tools/newfav1.sql",
+		"/C/Users/panhongguang/AppData/Roaming/Sublime Text 3/Packages/User/TortoiseSVN.sublime-settings",
+		"/C/Users/panhongguang/AppData/Roaming/Sublime Text 3/Packages/TortoiseSVN/TortoiseSVN.sublime-settings",
+		"/D/my_svn/code/phpuiDiff/multireq/test.html",
+		"/D/my_svn/code/phpuiDiff/multireq/conf.h",
+		"/D/Documents/sumlime/first.php",
+		"/D/Documents/sumlime/first.cpp"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 96.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"txt中文件名，实现对应online和offline数据文件diff。diff结果和online、offline同一目录。",
+			"open",
+			"ON_OFF",
+			"pDictName",
+			"resFilename",
+			"pDictFilename",
+			"g_pArgs->pStrTimestamp",
+			"execShell",
+			"pDictPath",
+			"pStrTime",
+			"threadNum",
+			"ENV[",
+			"pTimestamp",
+			"sprintf",
+			"fp",
+			"url",
+			"currentLine",
+			"fclose",
+			"fopen",
+			"malloc",
+			"posix_error(",
+			"posix_error",
+			"unix_error(",
+			"unix_error",
+			"mcount",
+			"INCLUDEDIR",
+			"Control_Send",
+			"o",
+			"pull_one_url",
+			"MAXLINE",
+			"res_data",
+			"get，获取添加的收藏点数据。action",
+			"65B92FB1",
+			"\":{\"",
+			"n",
+			"status",
+			"sid",
+			"newnum",
+			"syncServer",
+			"bduss",
+			"echo",
+			"common"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"pFilename",
+			"pTmpName",
+			"System",
+			"g_pArgs->iThreadNum",
+			"g_pArgs->pStrTimestamp",
+			"pResFile",
+			"strReqUrl",
+			"iCurrentLine",
+			"Fclose",
+			"Fopen",
+			"Malloc",
+			"ul_writelog(UL_LOG_FATAL, ",
+			"ul_writelog",
+			"requestDict",
+			"PERLINEMAX",
+			"newfavServer",
+			"bduid"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "diffPro.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1704,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1574,
+								1574
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1020.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "process.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 422,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								266,
+								266
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#",
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "process.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5086,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4639,
+								4639
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#include \"sendReqs.h\"",
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2210.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "conf/diffPro.conf",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 305,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								256,
+								263
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "args.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 469,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								52,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "args.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2024,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								422,
+								422
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "conf.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 733,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								549,
+								584
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "util.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1268,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								347,
+								351
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "util.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4388,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								559,
+								559
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 300.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "conf.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2430,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								744,
+								744
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "public.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 688,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								127,
+								127
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "Makefile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 621,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								302,
+								302
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 130.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "diffPro.sublime-project",
+	"replace":
+	{
+		"height": 66.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
