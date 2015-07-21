@@ -14,19 +14,8 @@ process模块功能：
 // 根据词表文件多线程发送http请求
 int sendReqs();
 
-// 预处理数据结果文件
-int getDiffFiles();
-
-// 将某目录下的所有pb文件转为json
-int pb2Json();
-
-// json diff
-int jsonDiff();
-
-// filter ignore field
-int filterFields();
-
-
+//处理返回的结果文件，最终实现所有文件的diff
+int dealResultFiles();
 
 #endif
 

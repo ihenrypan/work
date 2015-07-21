@@ -69,8 +69,9 @@ int main(int argc, char *argv[])
 	end = time(NULL);
 	printf("Total cost is : %f\n", difftime(end, start));
 
-	// 生成diff结果后，开始对结果进行处理。。。
+	// 生成diff结果后，开始对结果进行处理
 	// TODO
+
 	
     return 0;
 }

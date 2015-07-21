@@ -118,7 +118,7 @@ int getDiffFiles()
 将某目录下的所有pb文件转为json
 读取配置文件中的接口
 */
-int pb2Json()
+int transPbFilesToJson()
 {
 	//sed -n '2p' res/201505311442/diffResult2.txt 查看第2行
 	char pStrTmp[MAX_NAME];
@@ -139,9 +139,8 @@ int pb2Json()
 
     while(fgets(pStrTmp, MAX_NAME, pDiffFile) != NULL) {
 		iCurrentLine++;
-// 
 		// 查找dict文件名和行号
-		pPointPos = strchr(pStrTmp, '.');
+		pPointPos = strchr(pStrTmp, '.');	// 数据返回的文件名：dict_0.1001，'.'字符后为行号
 		strncpy(pDictFileName, pStrTmp, pPointPos - pStrTmp);
 		strcpy(pDiffLineNo, pPointPos + 1);
 
@@ -160,11 +159,20 @@ int pb2Json()
 		{
 			// TODO offline和online都需要json化
 			// 是否需要将json化的数据重新放在一个文件中？
-			// cd Target path & /home/map/php/bin/php ./pb2json.php filename outputFilename
-			sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, );
+			// cd Target path && /home/map/php/bin/php ./pb2json.php filename outputFilename
+			sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, pStrTmp);
 			System(pStrCmd);
 
-			sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, );
+			sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, pStrTmp);
+			System(pStrCmd);
+		}
+		else
+		{
+			// 如果非pb，将文件名重命名为xxx_json
+			sprintf(pStrCmd, "cd %s%s/online && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp, pStrTmp);
+			System(pStrCmd);
+
+			sprintf(pStrCmd, "cd %s%s/offline && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp, pStrTmp);
 			System(pStrCmd);
 		}
 	}
@@ -176,10 +184,48 @@ int pb2Json()
 /*
 对online和offline的文件进行jsondiff，
 **/
-int jsonDiff(char* pOnlineFilename, char* pOfflineFilename)
+int diffJsonFiles()
 {
-	// 根据diffResult.txt中文件名，实现对应online和offline数据文件diff。diff结果和online、offline同一目录。创建diff_res文件夹。
-	
+	char pStrTmp[MAX_NAME];
+	sprintf(pStrTmp, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diffResult.txt");
+
+    FILE *pDiffFile;
+    if ((pDiffFile=Fopen(pStrTmp, "r"))==NULL) {
+        exit(-1);
+    }
+
+    while(fgets(pStrTmp, MAX_NAME, pDiffFile) != NULL) {
+		// 
+		char pOnlineFilename[MAX_NAME];
+		char pOfflineFilename[MAX_NAME];
+		char pDiffRetFilename[MAX_NAME];	// 在results目录中
+
+		sprintf(pOnlineFilename, "%s%s_online/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
+		sprintf(pOfflineFilename, "%s%s_offline/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
+		sprintf(pDiffRetFilename, "%s%s/results/%s_diff_ret", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
+
+		// 执行diff
+		if (fileDiff(pOnlineFilename, pOfflineFilename, pDiffRetFilename) == 0)
+		{
+			ul_writelog(UL_LOG_NOTICE, "%s diff success!!!", pDiffRetFilename);
+		}
+		else
+		{
+			ul_writelog(UL_LOG_FATAL, "%s diff error!!!", pDiffRetFilename);
+		}
+	}
+}
+
+/**
+处理返回的结果文件，最终实现所有文件的diff
+*/
+int dealResultFiles()
+{
+	// 过滤出存在差异的文件
+	getDiffFiles();
+	transPbFilesToJson();
+	diffJsonFiles();
+
 	return 0;
 }
 

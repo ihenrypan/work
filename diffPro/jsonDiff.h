@@ -234,7 +234,7 @@ string readFileToString(const char* pFilename)
 	return ss.str();
 }
 
-int  fileDiff(char* pOnlineFile, char* pOfflineFile, char* pRetFile)
+int  fileDiff(const char* pOnlineFile, const char* pOfflineFile, const char* pRetFile)
 {
 	FILE* fpRetFile = fopen(pRetFile, "w+");
 	
