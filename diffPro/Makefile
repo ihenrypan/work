@@ -12,7 +12,7 @@ LIBDIR=                 -L$(LIBPATH)ullib/lib -lullib
 CC  = gcc
 CPP = g++
 CXX = gcc
-EXECUTABLE = diffPro
+EXECUTABLE = rapid 
 
 all     :  $(EXECUTABLE)
 	rm -f *.o
@@ -20,7 +20,8 @@ all     :  $(EXECUTABLE)
 clean   :
 	rm -f *.o $(EXECUTABLE)
 
-$(EXECUTABLE)	: diffPro.o args.o conf.o util.o process.o
+$(EXECUTABLE)	: args.o conf.o util.o process.o diffPro.o 
+
 	$(CPP) -o $@ $^ $(LIBDIR) $(INCLUDEDIR) -lm -lpthread -lcurl
 
 %.o     : %.cpp

@@ -4,7 +4,6 @@ out.txt
 a.out
 *.swp
 /mycode
-jsonDiff
 *.o
 
 /bin/*
