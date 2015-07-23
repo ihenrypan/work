@@ -20,9 +20,7 @@ all     :  $(EXECUTABLE)
 clean   :
 	rm -f *.o $(EXECUTABLE)
 
-#$(EXECUTABLE)	: easyVelocity.o Send_req.o Recv_res.o Analysis.o Query.o Unit_Queue.o Common.o Conf.o Control_Send.o
-
-$(EXECUTABLE)	: diffPro.o util.o conf.o args.o process.o
+$(EXECUTABLE)	: diffPro.o args.o conf.o util.o process.o
 	$(CPP) -o $@ $^ $(LIBDIR) $(INCLUDEDIR) -lm -lpthread -lcurl
 
 %.o     : %.cpp
