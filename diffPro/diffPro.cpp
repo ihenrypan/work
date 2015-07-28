@@ -38,10 +38,10 @@ int globalInit()
 
 int main(int argc, char *argv[])
 {
-	// 读取传参，顺序如下：线上环境、线下环境、词表名
+	// 读取传参，顺序如下：线上环境、线下环境、词表
 	if (argc != 4)
 	{
-		printf("Usage: ./%s onlineEnv offlineEnv dictFilename\n", argv[0]);
+		printf("Usage: %s onlineEnv offlineEnv dictFilename\n", argv[0]);
 		exit(-1);
 	}
 	else
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
 	// 生成diff结果后，开始对结果进行处理
 	// TODO
-
+    dealResultFiles();
 	
     return 0;
 }

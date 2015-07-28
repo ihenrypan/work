@@ -4,6 +4,8 @@
 #include "conf.h"
 #include "args.h"
 
+using namespace std;
+
 size_t writeDataCallback(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     size_t written;
@@ -117,28 +119,30 @@ int transPbFilesToJson()
 	//sed -n '2p' res/201505311442/diffResult2.txt 查看第2行
 	char pStrTmp[MAX_NAME];
 	sprintf(pStrTmp, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diffResult.txt");
+    
+    ifstream pDiffFile(pStrTmp);
 
-    FILE *pDiffFile;
-    if ((pDiffFile=Fopen(pStrTmp, "r"))==NULL) {
+    if (!pDiffFile) {
+        ul_writelog(UL_LOG_FATAL, "Open diff file %s error!", pStrTmp);
         exit(-1);
-    }	
-	// 首先，获取到存在diff的词表文件和行号，判断请求串是否为pb格式
-	unsigned iCurrentLine=0;
-
-	char pDictFileName[MAX_NAME];
-	char pDiffLineNo[MAX_NAME];
-	char *pPointPos;
+    }
+    
 	char pStrCmd[MAX_NAME];
 	char pUrl[MAX_LINE];
+    size_t pointPos;
+    string strLine;
+    string dictFilename;
+    string lineNo;
 
-    while(fgets(pStrTmp, MAX_NAME, pDiffFile) != NULL) {
-		iCurrentLine++;
-		// 查找dict文件名和行号
-		pPointPos = strchr(pStrTmp, '.');	// 数据返回的文件名：dict_0.1001，'.'字符后为行号
-		strncpy(pDictFileName, pStrTmp, pPointPos - pStrTmp);
-		strcpy(pDiffLineNo, pPointPos + 1);
+    while (getline(pDiffFile, strLine)) {
+        // 首先，获取到存在diff的词表文件和行号，判断请求串是否为pb格式
+        pointPos = strLine.find('.');
+        dictFilename = strLine.substr(0, pointPos); // 数据返回的文件名：dict_0.1001，'.'字符后为行号
+        lineNo = strLine.substr(pointPos + 1);
+        
+        ul_writelog(UL_LOG_DEBUG, "pDictFileName: %s, lineNo: %s", dictFilename.c_str(), lineNo.c_str()); 
 
-		sprintf(pStrCmd, "sed -n '%sp' %s%s/%s", pDiffLineNo, g_pConf->pDictPath, g_pArgs->pStrTimestamp, pDictFileName);
+		sprintf(pStrCmd, "sed -n %sp %s%s/%s", lineNo.c_str(), g_pConf->pDictPath, g_pArgs->pStrTimestamp, dictFilename.c_str());
 		FILE *pTmpFile;
 		if((pTmpFile = popen(pStrCmd, "r")) != NULL)
 		{
@@ -148,25 +152,28 @@ int transPbFilesToJson()
 			}
 			pclose(pTmpFile);
 		}
+
 		// 判断是否为pb格式
 		if (strstr(pUrl, g_pConf->pPbFlag) != NULL)
 		{
 			// TODO offline和online都需要json化
+            ul_writelog(UL_LOG_DEBUG, "Pb format, url: %s", pUrl);
 			// 是否需要将json化的数据重新放在一个文件中？
 			// cd Target path && /home/map/php/bin/php ./pb2json.php filename outputFilename
-			sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, pStrTmp);
+			sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
 			System(pStrCmd);
 
-			sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, pStrTmp, pStrTmp);
+			sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
 			System(pStrCmd);
 		}
 		else
 		{
+            ul_writelog(UL_LOG_DEBUG, "Json format, url: %s", pUrl);
 			// 如果非pb，将文件名重命名为xxx_json
-			sprintf(pStrCmd, "cd %s%s/online && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp, pStrTmp);
+			sprintf(pStrCmd, "cd %s%s/online && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
 			System(pStrCmd);
 
-			sprintf(pStrCmd, "cd %s%s/offline && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp, pStrTmp);
+			sprintf(pStrCmd, "cd %s%s/offline && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
 			System(pStrCmd);
 		}
 	}
@@ -179,22 +186,25 @@ int transPbFilesToJson()
 int diffJsonFiles()
 {
 	char pStrTmp[MAX_NAME];
-	sprintf(pStrTmp, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diffResult.txt");
+	sprintf(pStrTmp, "%s%s/diffResult.txt", g_pConf->pResPath, g_pArgs->pStrTimestamp);
 
-    FILE *pDiffFile;
-    if ((pDiffFile=Fopen(pStrTmp, "r"))==NULL) {
+    ifstream pDiffFile(pStrTmp);
+
+    if (!pDiffFile) {
+        ul_writelog(UL_LOG_FATAL, "Open diff file %s error!", pStrTmp);
         exit(-1);
     }
 
-    while(fgets(pStrTmp, MAX_NAME, pDiffFile) != NULL) {
-		// 
+    string strLine;
+    
+    while (getline(pDiffFile, strLine)) {
 		char pOnlineFilename[MAX_NAME];
 		char pOfflineFilename[MAX_NAME];
-		char pDiffRetFilename[MAX_NAME];	// 在results目录中
+		char pDiffRetFilename[MAX_NAME];	// 在diff_ret目录中
 
-		sprintf(pOnlineFilename, "%s%s_online/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
-		sprintf(pOfflineFilename, "%s%s_offline/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
-		sprintf(pDiffRetFilename, "%s%s/results/%s_diff_ret", g_pConf->pResPath, g_pArgs->pStrTimestamp, pStrTmp);
+		sprintf(pOnlineFilename, "%s%s/online/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
+		sprintf(pOfflineFilename, "%s%s/offline/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
+		sprintf(pDiffRetFilename, "%s%s/diff_ret/%s_diff_ret", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
 
 		// 执行diff
 		if (fileDiff(pOnlineFilename, pOfflineFilename, pDiffRetFilename) == 0)

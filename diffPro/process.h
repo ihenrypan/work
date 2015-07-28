@@ -1,6 +1,7 @@
 #ifndef _PROCESS_H
 #define _PROCESS_H
 
+#include <fstream>
 #include "public.h"
 /**
 process模块功能：

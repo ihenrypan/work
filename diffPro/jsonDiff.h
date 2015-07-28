@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include "public.h"
+#include "util.h"
 
 using namespace rapidjson;
 using namespace std;
@@ -238,7 +239,12 @@ string readFileToString(const char* pFilename)
 int  fileDiff(const char* pOnlineFile, const char* pOfflineFile, const char* pRetFile)
 {
 	FILE* fpRetFile = fopen(pRetFile, "w+");
-	
+
+    if (fpRetFile == NULL) {
+        ul_writelog(UL_LOG_FATAL, "Diff result file %s open failed!", pRetFile);
+        return -1;
+    }
+
 	string strOnline = readFileToString(pOnlineFile);
 	string strOffline = readFileToString(pOfflineFile);
 
@@ -249,19 +255,23 @@ int  fileDiff(const char* pOnlineFile, const char* pOfflineFile, const char* pRe
     if (docOnline.HasParseError())
     {  
         ul_writelog(UL_LOG_FATAL,"Online json file %s parse error!", pOnlineFile);
+        Fclose(fpRetFile);
         return -1;
     }
 
     if (docOffline.HasParseError())
     {
         ul_writelog(UL_LOG_FATAL,"Offline json file %s parse error!", pOfflineFile);
+        Fclose(fpRetFile);
     	return -1;
     }
-
+    
     int diffRet, status = 0;
     diffRet = jsonDiff(fpRetFile, &docOnline, &docOffline, &status, "");
 
     ul_writelog(UL_LOG_NOTICE, "diffRet: %d, status: %d", diffRet, status);
+    Fclose(fpRetFile);
+
     return diffRet;
 }
 

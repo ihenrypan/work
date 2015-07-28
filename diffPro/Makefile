@@ -12,7 +12,7 @@ LIBDIR=                 -L$(LIBPATH)ullib/lib -lullib
 CC  = gcc
 CPP = g++
 CXX = gcc
-EXECUTABLE = rapid 
+EXECUTABLE = diffPro 
 
 all     :  $(EXECUTABLE)
 	rm -f *.o

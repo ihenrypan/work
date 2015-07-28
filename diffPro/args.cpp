@@ -32,13 +32,17 @@ int getExtraArgs()
     checkDataPath(pTmpName);
 
     // check res file dir exist or not. if not exist, create it.
-    // 创建./res/timestamp
+    // 创建./res/
+    sprintf(pTmpName, "%s", g_pConf->pResPath);
+    checkDataPath(pTmpName);
     sprintf(pTmpName, "%s%s", g_pConf->pResPath, g_pArgs->pStrTimestamp);
     checkDataPath(pTmpName);
-    // 创建时间戳下的online和offline文件夹
+    // 创建时间戳下的online、offline和diff_ret文件夹
     sprintf(pTmpName, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "online");
     checkDataPath(pTmpName);
     sprintf(pTmpName, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "offline");
+    checkDataPath(pTmpName);
+    sprintf(pTmpName, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diff_ret");
     checkDataPath(pTmpName);
 
     return splitDictFile(iPerSize);
@@ -49,8 +53,10 @@ int splitDictFile(int iPerSize)
     char pStrCmd[MAX_NAME];
     //按10M左右大小split，并且最多split10个文件。词表名：./g_pConf->pDictPath/g_pArgs->pDictName
     sprintf(pStrCmd, "split -C %d -d -a 1 %s%s dict_", iPerSize, g_pConf->pDictPath, g_pArgs->pDictName);
-    if (System(pStrCmd) != 0)
+    if (System(pStrCmd) != 0) {
+        ul_writelog(UL_LOG_FATAL, "splitDictFile error!");
         return -1;
+    }
     // split后，将生成的词表文件mv到对应文件夹中 ./dict/timestamp
     sprintf(pStrCmd, "mv dict_* %s%s", g_pConf->pDictPath, g_pArgs->pStrTimestamp);
     if (System(pStrCmd) != 0)
