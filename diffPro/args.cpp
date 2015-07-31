@@ -11,17 +11,19 @@ int getExtraArgs()
     sprintf(pTmpName, "%s%s", g_pConf->pDictPath, g_pArgs->pDictName);
 
     struct stat statBuffer;
-    if (Stat(pTmpName, &statBuffer) != 0)
+    if (Stat(pTmpName, &statBuffer) != 0) {
         return -1;
+    }
     // 文件字节大小
     int iFileByte = statBuffer.st_size;
     const int TMP_SIZE = 10485760; // 10M
-    int iFileNum = iFileByte/TMP_SIZE + 1;  // 向上取整
-    if (iFileNum > 10)
-        iFileNum = 10;  // 最多开辟10个线程
+    int iFileNum = iFileByte / TMP_SIZE + 1; // 向上取整
+    if (iFileNum > 10) {
+        iFileNum = 10;    // 最多开辟10个线程
+    }
 
     g_pArgs->iThreadNum = iFileNum; // 赋值给全局线程数
-    int iPerSize = iFileByte/iFileNum + 5000;   // split -C iPerSize -d -a 1 DictName dict_，加5000为了向上取整，避免剩余的字节数单独生成一个文件。
+    int iPerSize = iFileByte / iFileNum + 5000; // split -C iPerSize -d -a 1 DictName dict_，加5000为了向上取整，避免剩余的字节数单独生成一个文件。
 
     char pStrTime[MAX_NAME];
     getCurrentTime(pStrTime);
@@ -59,8 +61,9 @@ int splitDictFile(int iPerSize)
     }
     // split后，将生成的词表文件mv到对应文件夹中 ./dict/timestamp
     sprintf(pStrCmd, "mv dict_* %s%s", g_pConf->pDictPath, g_pArgs->pStrTimestamp);
-    if (System(pStrCmd) != 0)
+    if (System(pStrCmd) != 0) {
         return -1;
+    }
     // TODO:是否同时将最初的词表文件删除？
 
     return 0;

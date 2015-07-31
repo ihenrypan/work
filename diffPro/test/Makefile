@@ -22,7 +22,7 @@ clean   :
 
 #$(EXECUTABLE)	: easyVelocity.o Send_req.o Recv_res.o Analysis.o Query.o Unit_Queue.o Common.o Conf.o Control_Send.o
 
-$(EXECUTABLE)	: cmdTest.o ../util.o 
+$(EXECUTABLE)	: test.o ../util.o 
 	$(CPP) -o $@ $^ $(LIBDIR) $(INCLUDEDIR) -lm -lpthread -lcurl
 
 %.o     : %.cpp

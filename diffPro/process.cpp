@@ -16,85 +16,83 @@ size_t writeDataCallback(void *ptr, size_t size, size_t nmemb, FILE *stream)
 // 线程函数
 void *threadFunc(void *pName)
 {
-	char *pTmp = (char *)pName;
-	char pFilename[MAX_NAME];
+    char *pTmp = (char *)pName;
+    char pFilename[MAX_NAME];
 
-	sprintf(pFilename, "%s%s/%s", g_pConf->pDictPath, g_pArgs->pStrTimestamp, pTmp);
+    sprintf(pFilename, "%s%s/%s", g_pConf->pDictPath, g_pArgs->pStrTimestamp, pTmp);
 
     FILE *pDictFile;
-    if ((pDictFile=Fopen(pFilename, "r"))==NULL) {
+    if ((pDictFile = Fopen(pFilename, "r")) == NULL) {
         free(pName);
         exit(-1);
     }
-    
-	char strLine[MAX_LINE];
-	unsigned iCurrentLine=0;
 
-	char strReqUrl[MAX_LINE];
+    char strLine[MAX_LINE];
+    unsigned iCurrentLine = 0;
 
-	// curl init
-	CURL *curl;
-	curl = curl_easy_init();
+    char strReqUrl[MAX_LINE];
 
-    while(fgets(strLine, MAX_LINE, pDictFile) != NULL) {
-		iCurrentLine++;
-		for(int j=0; j<2; j++) {
+    // curl init
+    CURL *curl;
+    curl = curl_easy_init();
+
+    while (fgets(strLine, MAX_LINE, pDictFile) != NULL) {
+        iCurrentLine++;
+        for (int j = 0; j < 2; j++) {
 // 为每一个query创建一个结果文件。name rule: ./res/timestamp/ online or offline /dict_i_iCurrentLine
-			//sprintf(pFilename, "%s%s/%s/%s_%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  ON_OFF[j], pTmp, iCurrentLine);
-			if (j == 0)
-			{
-				sprintf(pFilename, "%s%s/%s/%s.%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  "online", pTmp, iCurrentLine);
-				strcpy(strReqUrl, g_pArgs->pOnlineEnv);
-			}
-			else
-			{
-				sprintf(pFilename, "%s%s/%s/%s.%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  "offline", pTmp, iCurrentLine);
-				strcpy(strReqUrl, g_pArgs->pOfflineEnv);
-			}
-			FILE *pResFile;
-			if ((pResFile=Fopen(pFilename, "wb"))==NULL)
-        		exit(-1);
+            //sprintf(pFilename, "%s%s/%s/%s_%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  ON_OFF[j], pTmp, iCurrentLine);
+            if (j == 0) {
+                sprintf(pFilename, "%s%s/%s/%s.%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  "online", pTmp, iCurrentLine);
+                strcpy(strReqUrl, g_pArgs->pOnlineEnv);
+            } else {
+                sprintf(pFilename, "%s%s/%s/%s.%d", g_pConf->pResPath, g_pArgs->pStrTimestamp,  "offline", pTmp, iCurrentLine);
+                strcpy(strReqUrl, g_pArgs->pOfflineEnv);
+            }
+            FILE *pResFile;
+            if ((pResFile = Fopen(pFilename, "wb")) == NULL) {
+                exit(-1);
+            }
 
-			CURLcode res;
-			strcat(strReqUrl, strLine);
+            CURLcode res;
+            strcat(strReqUrl, strLine);
 //			printf("strReqUrl= %s\n",strReqUrl);
-			curl_easy_setopt(curl, CURLOPT_URL, strReqUrl);
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeDataCallback);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, pResFile);
-			curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
-			res = curl_easy_perform(curl);
-			if(res != CURLE_OK) {
-   				 ul_writelog(UL_LOG_FATAL, "curl_easy_perform() failed, error msg: %s\n", curl_easy_strerror(res));
-  			}
-			Fclose(pResFile);
-		}
-	}    
-	curl_easy_cleanup(curl);
+            curl_easy_setopt(curl, CURLOPT_URL, strReqUrl);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeDataCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, pResFile);
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+            res = curl_easy_perform(curl);
+            if (res != CURLE_OK) {
+                ul_writelog(UL_LOG_FATAL, "curl_easy_perform() failed, error msg: %s\n", curl_easy_strerror(res));
+            }
+            Fclose(pResFile);
+        }
+    }
+    curl_easy_cleanup(curl);
 
-	Fclose(pDictFile);
-	free(pName);
+    Fclose(pDictFile);
+    free(pName);
 
     return NULL;
 }
 
 int sendReqs()
 {
-	//进程数组
+    //进程数组
     pthread_t tid[g_pArgs->iThreadNum];
 
-    // Must initialize libcurl before any threads are started 
+    // Must initialize libcurl before any threads are started
     curl_global_init(CURL_GLOBAL_ALL);
 
-	int i;
-    for(i=0; i< g_pArgs->iThreadNum; i++) {
+    int i;
+    for (i = 0; i < g_pArgs->iThreadNum; i++) {
         char *pDictFileName = (char *)Malloc(MAX_NAME);	// 在线程函数中free
         sprintf(pDictFileName, "dict_%d", i);	// 词表文件前缀为dict_
 
         Pthread_create(&tid[i], NULL, threadFunc, (void *)pDictFileName);
     }
 
-    // now wait for all threads to terminate 
-    for(i=0; i< g_pArgs->iThreadNum; i++) {
+    // now wait for all threads to terminate
+    for (i = 0; i < g_pArgs->iThreadNum; i++) {
         Pthread_join(tid[i], NULL);
     }
 
@@ -108,27 +106,27 @@ int getDiffFiles()
 //  diff res/201505311442/online/ res/201505311442/offline/ --brief | awk '{print $4}'| awk -F'/' '{print $NF}' > res/201505311442/diffResult.txt
 // diffResult.txt中每行，为一个存在diff的文件名
     sprintf(pStrCmd, "diff %s%s/%s %s%s/%s --brief | awk '{print $4}'| awk -F'/' '{print $NF}' >%s%s/diffResult.txt", g_pConf->pResPath, g_pArgs->pStrTimestamp, "online", g_pConf->pResPath, g_pArgs->pStrTimestamp, "offline", g_pConf->pResPath, g_pArgs->pStrTimestamp);
-	System(pStrCmd);
+    System(pStrCmd);
 
-	return 0;
+    return 0;
 }
 
 //将某目录下的所有pb文件转为json,读取配置文件中的接口
 int transPbFilesToJson()
 {
-	//sed -n '2p' res/201505311442/diffResult2.txt 查看第2行
-	char pStrTmp[MAX_NAME];
-	sprintf(pStrTmp, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diffResult.txt");
-    
+    //sed -n '2p' res/201505311442/diffResult2.txt 查看第2行
+    char pStrTmp[MAX_NAME];
+    sprintf(pStrTmp, "%s%s/%s", g_pConf->pResPath, g_pArgs->pStrTimestamp, "diffResult.txt");
+
     ifstream pDiffFile(pStrTmp);
 
     if (!pDiffFile) {
         ul_writelog(UL_LOG_FATAL, "Open diff file %s error!", pStrTmp);
         exit(-1);
     }
-    
-	char pStrCmd[MAX_NAME];
-	char pUrl[MAX_LINE];
+
+    char pStrCmd[MAX_NAME];
+    char pUrl[MAX_LINE];
     size_t pointPos;
     string strLine;
     string dictFilename;
@@ -139,54 +137,49 @@ int transPbFilesToJson()
         pointPos = strLine.find('.');
         dictFilename = strLine.substr(0, pointPos); // 数据返回的文件名：dict_0.1001，'.'字符后为行号
         lineNo = strLine.substr(pointPos + 1);
-        
-        ul_writelog(UL_LOG_DEBUG, "pDictFileName: %s, lineNo: %s", dictFilename.c_str(), lineNo.c_str()); 
 
-		sprintf(pStrCmd, "sed -n %sp %s%s/%s", lineNo.c_str(), g_pConf->pDictPath, g_pArgs->pStrTimestamp, dictFilename.c_str());
-		FILE *pTmpFile;
-		if((pTmpFile = popen(pStrCmd, "r")) != NULL)
-		{
-			while(fgets(pUrl, MAX_LINE, pTmpFile) != NULL)
-			{
-				;	// nothing to do
-			}
-			pclose(pTmpFile);
-		}
+        ul_writelog(UL_LOG_DEBUG, "pDictFileName: %s, lineNo: %s", dictFilename.c_str(), lineNo.c_str());
 
-		// 判断是否为pb格式
-		if (strstr(pUrl, g_pConf->pPbFlag) != NULL)
-		{
-			// TODO offline和online都需要json化
+        sprintf(pStrCmd, "sed -n %sp %s%s/%s", lineNo.c_str(), g_pConf->pDictPath, g_pArgs->pStrTimestamp, dictFilename.c_str());
+        FILE *pTmpFile;
+        if ((pTmpFile = popen(pStrCmd, "r")) != NULL) {
+            while (fgets(pUrl, MAX_LINE, pTmpFile) != NULL) {
+                ;	// nothing to do
+            }
+            pclose(pTmpFile);
+        }
+
+        // 判断是否为pb格式
+        if (strstr(pUrl, g_pConf->pPbFlag) != NULL) {
+            // TODO offline和online都需要json化
             ul_writelog(UL_LOG_DEBUG, "Pb format, url: %s", pUrl);
-			// 是否需要将json化的数据重新放在一个文件中？
-			// cd Target path && /home/map/php/bin/php ./pb2json.php filename outputFilename
-			sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
-			System(pStrCmd);
+            // 是否需要将json化的数据重新放在一个文件中？
+            // cd Target path && /home/map/php/bin/php ./pb2json.php filename outputFilename
+            sprintf(pStrCmd, "cd %s%s/online && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
+            System(pStrCmd);
 
-			sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
-			System(pStrCmd);
-		}
-		else
-		{
+            sprintf(pStrCmd, "cd %s%s/offline && %s %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, g_pConf->pPb2Json, strLine.c_str(), strLine.c_str());
+            System(pStrCmd);
+        } else {
             ul_writelog(UL_LOG_DEBUG, "Json format, url: %s", pUrl);
-			// 如果非pb，将文件名重命名为xxx_json
-			sprintf(pStrCmd, "cd %s%s/online && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
-			System(pStrCmd);
+            // 如果非pb，将文件名重命名为xxx_json
+            sprintf(pStrCmd, "cd %s%s/online && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
+            System(pStrCmd);
 
-			sprintf(pStrCmd, "cd %s%s/offline && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
-			System(pStrCmd);
-		}
-	}
+            sprintf(pStrCmd, "cd %s%s/offline && mv %s %s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str(), strLine.c_str());
+            System(pStrCmd);
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 // json diff. use lib
 //对online和offline的文件进行jsondiff，
 int diffJsonFiles()
 {
-	char pStrTmp[MAX_NAME];
-	sprintf(pStrTmp, "%s%s/diffResult.txt", g_pConf->pResPath, g_pArgs->pStrTimestamp);
+    char pStrTmp[MAX_NAME];
+    sprintf(pStrTmp, "%s%s/diffResult.txt", g_pConf->pResPath, g_pArgs->pStrTimestamp);
 
     ifstream pDiffFile(pStrTmp);
 
@@ -196,43 +189,40 @@ int diffJsonFiles()
     }
 
     string strLine;
-    
+
     while (getline(pDiffFile, strLine)) {
-		char pOnlineFilename[MAX_NAME];
-		char pOfflineFilename[MAX_NAME];
-		char pDiffRetFilename[MAX_NAME];	// 在diff_ret目录中
+        char pOnlineFilename[MAX_NAME];
+        char pOfflineFilename[MAX_NAME];
+        char pDiffRetFilename[MAX_NAME];	// 在diff_ret目录中
 
-		sprintf(pOnlineFilename, "%s%s/online/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
-		sprintf(pOfflineFilename, "%s%s/offline/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
-		sprintf(pDiffRetFilename, "%s%s/diff_ret/%s_diff_ret", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
+        sprintf(pOnlineFilename, "%s%s/online/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
+        sprintf(pOfflineFilename, "%s%s/offline/%s_json", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
+        sprintf(pDiffRetFilename, "%s%s/diff_ret/%s_diff_ret", g_pConf->pResPath, g_pArgs->pStrTimestamp, strLine.c_str());
 
-		// 执行diff
-		if (fileDiff(pOnlineFilename, pOfflineFilename, pDiffRetFilename) == 0)
-		{
-			ul_writelog(UL_LOG_NOTICE, "%s diff success!!!", pDiffRetFilename);
-		}
-		else
-		{
-			ul_writelog(UL_LOG_FATAL, "%s diff error!!!", pDiffRetFilename);
-		}
-	}
+        // 执行diff
+        if (fileDiff(pOnlineFilename, pOfflineFilename, pDiffRetFilename) == 0) {
+            ul_writelog(UL_LOG_NOTICE, "%s diff success!!!", pDiffRetFilename);
+        } else {
+            ul_writelog(UL_LOG_FATAL, "%s diff error!!!", pDiffRetFilename);
+        }
+    }
     return 0;
 }
 
 //处理返回的结果文件，最终实现所有文件的diff
 int dealResultFiles()
 {
-	// 过滤出存在差异的文件
-	getDiffFiles();
-	transPbFilesToJson();
-	diffJsonFiles();
+    // 过滤出存在差异的文件
+    getDiffFiles();
+    transPbFilesToJson();
+    diffJsonFiles();
 
-	return 0;
+    return 0;
 }
 
 // filter ignore field
 int filterFields()
 {
-	return 0;
+    return 0;
 }
 

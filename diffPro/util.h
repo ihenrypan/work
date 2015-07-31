@@ -29,8 +29,8 @@ int Access(const char *pathname, int mode);
 int Stat(const char *filename, struct stat *buf);
 
 /* Pthreads thread control wrappers */
-void Pthread_create(pthread_t *tidp, pthread_attr_t *attrp, 
-		    void * (*routine)(void *), void *argp);
+void Pthread_create(pthread_t *tidp, pthread_attr_t *attrp,
+        void * (*routine)(void *), void *argp);
 void Pthread_join(pthread_t tid, void **thread_return);
 void Pthread_cancel(pthread_t tid);
 void Pthread_detach(pthread_t tid);
