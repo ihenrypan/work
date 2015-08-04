@@ -1,7 +1,6 @@
 #ifndef _PROCESS_H
 #define _PROCESS_H
 
-#include <fstream>
 #include "public.h"
 /**
 process模块功能：
@@ -17,6 +16,7 @@ int sendReqs();
 
 //处理返回的结果文件，最终实现所有文件的diff
 int dealResultFiles();
+int putFilterToSet(const char* pFilename, std::set<std::string>& filterSet);
 
 #endif
 

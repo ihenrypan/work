@@ -9,22 +9,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <pthread.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <time.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <limits.h>
-
-// #include <sys/epoll.h>
-// #include <netinet/in.h>
-// #include <arpa/inet.h>
-// #include <sys/socket.h>
-// #include <netinet/tcp.h>
-// #include <netdb.h>
-// #include <signal.h>
+#include <dirent.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 // curl
 #include <curl/curl.h>
@@ -32,6 +25,16 @@
 // ullib
 #include <ul_conf.h>
 #include <ul_log.h>
+
+// c++
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <set>
+#include <list>
+#include <iterator>
+
 
 // define
 #define MAX_LINE 2048	// 每个query最大字符数

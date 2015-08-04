@@ -21,6 +21,7 @@ typedef struct _globalConf {
     char pServiceName[MAX_NAME]; // diff 服务名，如phpui
     char pPbFlag[MAX_NAME];	// pb标志字段。rp_format=pb
     char pPb2Json[MAX_NAME]; // pb转json程序。/home/map/php/bin/php ./pb2json.php
+    char pConfFile[MAX_NAME]; // 服务配置文件名
 
     size_t iPressValue; // 压力值（暂未使用）
 } globalConf;

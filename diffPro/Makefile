@@ -1,13 +1,10 @@
 CXXFLAGS = -g -pg -finline-functions -Wall -Winline -pipe 
 
-
 LIBPATH=               ./libs/
 
 INCLUDEDIR=             -I$(LIBPATH)ullib/include/ -I$(LIBPATH)rapidjson/include/
 
 LIBDIR=                 -L$(LIBPATH)ullib/lib -lullib 
-
-
 
 CC  = gcc
 CPP = g++

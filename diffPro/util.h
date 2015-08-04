@@ -43,5 +43,8 @@ void Pthread_once(pthread_once_t *once_control, void (*init_function)());
 int checkDataPath(const char* pFilepath);
 // 获取当前时间，格式：201505171630
 void getCurrentTime(char *pStr);
+// 遍历目录下所有文件（非递归遍历）
+int getFilesInDir(const char* pDir, std::list<std::string>& filesList);
+
 
 #endif

@@ -170,6 +170,7 @@ int transPbFilesToJson()
             System(pStrCmd);
         }
     }
+    pDiffFile.close();
 
     return 0;
 }
@@ -206,6 +207,9 @@ int diffJsonFiles()
             ul_writelog(UL_LOG_FATAL, "%s diff error!!!", pDiffRetFilename);
         }
     }
+
+    pDiffFile.close();
+    
     return 0;
 }
 
@@ -220,9 +224,143 @@ int dealResultFiles()
     return 0;
 }
 
+int putFilterToSet(const char* pFilename, set<string>& filterSet) {
+    ifstream pFilterFile(pFilename);
+
+    if (!pFilterFile) {
+        ul_writelog(UL_LOG_FATAL, "Open filter conf file %s error!", pFilename);
+        return -1;
+    }
+    
+    string line;
+
+    while (getline(pFilterFile, line)) {
+        // 过滤掉空行和行首为#的行
+        if (!line.empty() && line.at(0) != '#') {
+            filterSet.insert(line);
+        }
+    }
+    
+    pFilterFile.close();
+
+    return 0;
+}
+
+/**
+ 预处理每个存在差异的字段。
+ 1、将数组元素编号删除
+ 2、将差异值删除，只保留字段名称
+ */
+string preDealIgnoreStr(string ignoreStr)
+{
+    string strRet;
+    size_t len = ignoreStr.length();
+    if (len == 0) return "";
+
+    bool isNumFlag = false;
+    char ch;
+    size_t i=0;
+
+    while (i < len && (ch = ignoreStr.at(i)) != '|') {
+        ++i;
+        if(isdigit(ch)) {
+            isNumFlag = true;
+            continue;
+        } else if(isNumFlag == true) {
+            ++i; // skip "->" string
+        } else {
+           strRet.append(1, ch); 
+        }
+        isNumFlag = false;
+    }
+
+    return strRet;
+}
+
+/*
+ *判断str是否匹配filter。
+ 只要filter字符串被完全匹配即可。
+ 匹配返回0，否则返回正负值。
+ */
+int isMatchFilter(const string& str, const string& filter) {
+   size_t lenStr, lenFilter;
+   lenStr = str.length();
+   lenFilter = str.length();
+
+   size_t i = 0;
+   char ch1, ch2;
+   while (i < lenFilter && i < lenStr) {
+       ch1 = str.at(i);
+       ch2 = filter.at(i);
+
+       if (ch1 > ch2) {
+           return 1;
+       } else if (ch1 < ch2) {
+           return -1;
+       }
+       ++i;
+   }
+   return 0;
+}
+
 // filter ignore field
+// step1: read conf file contents to set
+// step2: traversal diff files to list
 int filterFields()
 {
+    set<string> filterSet;
+    putFilterToSet(g_pConf->pConfFile, filterSet);
+
+    list<string> diffFiles;
+    string pDiffRetDir = string(g_pConf->pResPath) + g_pArgs->pStrTimestamp + string("/diff_ret");
+    getFilesInDir(pDiffRetDir.c_str(), diffFiles);
+   
+    // Iterator diff files contents.
+    ifstream file;
+    string line;
+    string diffStr;
+    string diffRetFilename = string(g_pConf->pResPath) + g_pArgs->pStrTimestamp + "/finalDiffRet.txt";
+    ofstream diffRetFile;
+
+    diffRetFile.open(diffRetFilename.c_str());
+    if (!diffRetFile.is_open())
+    {
+        ul_writelog(UL_LOG_FATAL, "Open diff file %s, error msg: %s.", diffRetFilename.c_str(), strerror(errno));
+        return -1;
+    }
+
+    for (list<string>::iterator it=diffFiles.begin(); it != diffFiles.end(); it++) {
+        file.open(it->c_str());
+        if (!file.is_open()) {
+            ul_writelog(UL_LOG_FATAL, "Open diff file %s, error msg: %s.", it->c_str(), strerror(errno));
+            continue;
+        }
+
+        while (getline(file, line)) {
+            if (line.empty())
+                continue;
+            diffStr = preDealIgnoreStr(line);
+            int ret;
+            bool isMatch = false;
+            for (set<string>::iterator it = filterSet.begin(); it != filterSet.end(); ++it) {
+                ret = isMatchFilter(diffStr, *it);
+                if (ret > 0) {
+                    continue;
+                } else if (ret < 0) { // 未找到匹配串，将对应字符串写入一个文件中。
+                    break;
+                } else { // 找到对应过滤规则，不写入文件
+                    isMatch = true;
+                    break;
+                }
+            }
+            if (isMatch == false) {
+                diffRetFile << line << "\n"; // 写入到文件
+            }
+        }
+        file.close();
+    }
+    diffRetFile.close();
+
     return 0;
 }
 

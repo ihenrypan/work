@@ -68,6 +68,12 @@ int loadConfig(const char* pConfPath, const char* pFilename)
     }
     ul_writelog(UL_LOG_NOTICE, "pb2json %s", g_pConf->pPb2Json);
 
+// filter_conf_file
+    if (0 == ul_getconfstr(pConfData, "filter_conf_file", g_pConf->pConfFile)) {
+        ul_writelog(UL_LOG_TRACE, "%s No define server filter conf file.", pFilename);
+    }
+    ul_writelog(UL_LOG_NOTICE, "filter conf file %s", g_pConf->pConfFile);
+
     ul_freeconf(pConfData);
 
     return 0;

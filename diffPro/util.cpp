@@ -193,3 +193,34 @@ void getCurrentTime(char *pStr)
 
     strftime(pStr, MAX_NAME, "%Y%m%d%H%M", local);
 }
+
+int getFilesInDir(const char* pStrDir, std::list<std::string>& filesList)
+{
+    DIR* pDir;
+    std::string filePath;
+    struct stat filestat;
+
+    pDir = opendir(pStrDir);
+
+    if (pDir == NULL)
+    {
+        ul_writelog(UL_LOG_FATAL, "Opendir %s fail, error msg: %s", pStrDir, strerror(errno));
+        return -1;
+    }
+
+    struct dirent *pDirStruct;
+    
+    while ((pDirStruct = readdir(pDir))) {
+        filePath = std::string(pStrDir) + "/" + std::string(pDirStruct->d_name);
+        // 过滤掉状态非法的文件和目录
+        if (stat(filePath.c_str(), &filestat)) continue;
+        if (S_ISDIR( filestat.st_mode ))         continue;
+        
+        filesList.push_back(filePath);
+    }
+
+    closedir(pDir);
+
+    return 0;
+}
+

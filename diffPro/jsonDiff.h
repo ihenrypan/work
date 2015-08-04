@@ -3,10 +3,6 @@
 
 #include <rapidjson/document.h>
 #include <rapidjson/filereadstream.h>
-#include <cstdio>
-#include <string>
-#include <fstream>
-#include <sstream>
 
 #include "public.h"
 #include "util.h"
@@ -14,6 +10,9 @@
 using namespace rapidjson;
 using namespace std;
 
+/**
+将int转换为string
+*/
 string ToString(int n)
 {
     stringstream ss;
@@ -21,6 +20,9 @@ string ToString(int n)
     return ss.str();
 }
 
+/**
+将获取到的value转换为string
+*/
 string GetValueToString(const Value* v)
 {
     stringstream ss;
@@ -43,6 +45,9 @@ string GetValueToString(const Value* v)
     return ss.str();
 }
 
+/**
+实现将两个json数据diff，并将差异字段存储于文件中
+*/
 int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string path)
 {
     Type onType = onValue->GetType();
@@ -117,7 +122,6 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
                 Value* tmpOffValue = &(*offValue)[i];
 
                 // itearator every elements..
-                // TODO
                 ret = jsonDiff(fout, tmpOnValue, tmpOffValue, &status, path + "->" + ToString((int)i));
 
                 if (ret != 0) {
@@ -178,14 +182,8 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
     return 0;
 }
 
-/*
-interface
-params:
-pOnlineFile:	online json file name
-pOfflineFile:	offline json file name
-pRetFile:	json result file name
-
-return:	function status
+/**
+将文件内容读取到string
 */
 string readFileToString(const char* pFilename)
 {
@@ -196,7 +194,15 @@ string readFileToString(const char* pFilename)
 
     return ss.str();
 }
+/**
+interface
+params:
+pOnlineFile:	online json file name
+pOfflineFile:	offline json file name
+pRetFile:	json result file name
 
+return:	function status
+*/
 int  fileDiff(const char* pOnlineFile, const char* pOfflineFile, const char* pRetFile)
 {
     FILE* fpRetFile = fopen(pRetFile, "w+");
