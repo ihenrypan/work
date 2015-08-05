@@ -158,11 +158,11 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
             break;
         }
         case kNumberType: {
-            // compare two number
-            int onIsInt = onValue->IsInt64() ? 1 : 0;
-            int offIsInt = offValue->IsInt64() ? 1 : 0;
-            if (onIsInt == offIsInt) {
-                if ((onIsInt = 1 && onValue->GetInt64() == offValue->GetInt64()) || (onValue->GetDouble() == offValue->GetDouble())) {
+            int onIsDouble = (onValue->IsDouble()) ? 1 : 0;
+            int offIsDouble = (offValue->IsDouble()) ? 1 : 0;
+            if( onIsDouble == offIsDouble) {
+                if( (onIsDouble == 1 && onValue->GetDouble() == offValue->GetDouble()) 
+                    || (onIsDouble == 0 && onValue->GetInt64() == offValue->GetInt64()) ) {
                     *status = 3;
                 } else {
                     *status = 2;
@@ -170,11 +170,9 @@ int jsonDiff(FILE* fout, Value* onValue, Value* offValue, int* status, string pa
             } else {
                 *status = 2;
             }
-
             break;
         }
         default:// type = kTrueType || kFalseType || kNullType
-
         {
             *status = 2;
         }

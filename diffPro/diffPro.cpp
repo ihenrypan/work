@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
         ul_writelog(UL_LOG_FATAL, "globalInit fail, exit!!!");
         exit(-1);
     }
+  //  strcpy(g_pArgs->pStrTimestamp, "201508052127");
+  //  filterFields();
 
     time_t start, end;
     start = time(NULL);

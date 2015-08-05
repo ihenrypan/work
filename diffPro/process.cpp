@@ -179,6 +179,7 @@ int transPbFilesToJson()
 //对online和offline的文件进行jsondiff，
 int diffJsonFiles()
 {
+    ul_writelog(UL_LOG_DEBUG, "Diff json files...");
     char pStrTmp[MAX_NAME];
     sprintf(pStrTmp, "%s%s/diffResult.txt", g_pConf->pResPath, g_pArgs->pStrTimestamp);
 
@@ -210,17 +211,6 @@ int diffJsonFiles()
 
     pDiffFile.close();
     
-    return 0;
-}
-
-//处理返回的结果文件，最终实现所有文件的diff
-int dealResultFiles()
-{
-    // 过滤出存在差异的文件
-    getDiffFiles();
-    transPbFilesToJson();
-    diffJsonFiles();
-
     return 0;
 }
 
@@ -285,10 +275,11 @@ string preDealIgnoreStr(string ignoreStr)
 int isMatchFilter(const string& str, const string& filter) {
    size_t lenStr, lenFilter;
    lenStr = str.length();
-   lenFilter = str.length();
+   lenFilter = filter.length();
 
    size_t i = 0;
    char ch1, ch2;
+   
    while (i < lenFilter && i < lenStr) {
        ch1 = str.at(i);
        ch2 = filter.at(i);
@@ -308,6 +299,8 @@ int isMatchFilter(const string& str, const string& filter) {
 // step2: traversal diff files to list
 int filterFields()
 {
+    ul_writelog(UL_LOG_DEBUG, "Filter fields...");
+    
     set<string> filterSet;
     putFilterToSet(g_pConf->pConfFile, filterSet);
 
@@ -316,7 +309,6 @@ int filterFields()
     getFilesInDir(pDiffRetDir.c_str(), diffFiles);
    
     // Iterator diff files contents.
-    ifstream file;
     string line;
     string diffStr;
     string diffRetFilename = string(g_pConf->pResPath) + g_pArgs->pStrTimestamp + "/finalDiffRet.txt";
@@ -329,10 +321,11 @@ int filterFields()
         return -1;
     }
 
-    for (list<string>::iterator it=diffFiles.begin(); it != diffFiles.end(); it++) {
-        file.open(it->c_str());
+    for (list<string>::iterator fileIt=diffFiles.begin(); fileIt != diffFiles.end(); fileIt++) {
+        ifstream file; // should define local var
+        file.open(fileIt->c_str());
         if (!file.is_open()) {
-            ul_writelog(UL_LOG_FATAL, "Open diff file %s, error msg: %s.", it->c_str(), strerror(errno));
+            ul_writelog(UL_LOG_FATAL, "Open diff file %s, error msg: %s.", fileIt->c_str(), strerror(errno));
             continue;
         }
 
@@ -342,8 +335,8 @@ int filterFields()
             diffStr = preDealIgnoreStr(line);
             int ret;
             bool isMatch = false;
-            for (set<string>::iterator it = filterSet.begin(); it != filterSet.end(); ++it) {
-                ret = isMatchFilter(diffStr, *it);
+            for (set<string>::iterator setIt = filterSet.begin(); setIt != filterSet.end(); ++setIt) {
+                ret = isMatchFilter(diffStr, *setIt);
                 if (ret > 0) {
                     continue;
                 } else if (ret < 0) { // 未找到匹配串，将对应字符串写入一个文件中。
@@ -354,6 +347,7 @@ int filterFields()
                 }
             }
             if (isMatch == false) {
+                ul_writelog(UL_LOG_DEBUG, "Write diff line: %s into finaldiff ", line.c_str());
                 diffRetFile << line << "\n"; // 写入到文件
             }
         }
@@ -361,6 +355,18 @@ int filterFields()
     }
     diffRetFile.close();
 
+    return 0;
+}
+
+//处理返回的结果文件，最终实现所有文件的diff
+int dealResultFiles()
+{
+    // 过滤出存在差异的文件
+    getDiffFiles();
+    transPbFilesToJson();
+    diffJsonFiles();
+    filterFields();
+   
     return 0;
 }
 
